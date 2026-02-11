@@ -129,3 +129,9 @@ docker stop dev-env-asm32-1
 ```shell
 docker ps -a --filter "ancestor=dev-env-assembly-asm32" -q | xargs -r docker rm -f && docker rmi -f dev-env-assembly-asm32
 ```
+
+## ps:
+
+I added a LICENSE file to protect own repo updates out the other students. If they decided make a repo clone without my notify, they must say who is the origin author.
+
+Sure current repo is not prime. I made fork. You can find author **djnzx** by the next [**url**](https://github.com/djnzx/linux-practice.git).
