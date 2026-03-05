@@ -1,0 +1,5 @@
+[test text]
+The quick brown fox jumps over the lazy dog.
+This classic pangram contains every letter of the English alphabet, making it ideal for testing character encoding and input-output streams.
+When processing this text through a buffer, ensure that whitespace is handled according to your requirements, whether you are using the extraction operator or the getline function.
+Success in this test confirms that your stream pipeline is functioning as expected.
