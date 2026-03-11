@@ -1,28 +1,27 @@
 CXX 	 := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -O2
-LDLIBS	 := $(SLIB_FOLDER)/librandom.so pthread
 
 PROJECT    	:= main
-# rename: folder --> dir
-SRC_FOLDER 	:= src
-SLIB_FOLDER := shared_lib
+SRC_DIR 	:= src
+SLIB_DIR 	:= shared_lib
 
 OBJ_NAMES  	:= main.o math.o
-OBJECTS    	:= $(addprefix $(SRC_FOLDER)/, $(OBJ_NAMES))
+SLIB_NAMES	:= librandom.so
+OBJECTS    	:= $(addprefix $(SRC_DIR)/, $(OBJ_NAMES))
+LDLIBS		:= $(addprefix $(SLIB_DIR)/, $(SLIB_NAMES))
 
 .PHONY: all
-all: compile run
+all: slib compile run
 
 # compile a shared lib
 .PHONY: slib
 slib:
-	@$(MAKE) -C $(SLIB_FOLDER) --no-print-directory
+	@$(MAKE) -C $(SLIB_DIR) --no-print-directory
 
 # all actions to compile base project source files
-.PHONY: compile	# todo: ranme to "compile-link"
-compile: slib $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(PROJECT) $(SLIB_FOLDER)/librandom.so
-# 	$(CXX) $(CXXFLAGS) $^ -o ./$(PROJECT) $(LIB_FLAGS)
+.PHONY: compile
+compile: $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(PROJECT) $(LDLIBS)
 
 $(OBJECTS): %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $^ -o $@ $(LDLIBS)
@@ -39,12 +38,13 @@ run:
 # cleaning
 .PHONY: full-clean
 full-clean: clean
-	@$(MAKE) -C $(SLIB_FOLDER) --no-print-directory full-clean
 	@rm -f $(PROJECT)
+	@$(MAKE) -C $(SLIB_DIR) --no-print-directory full-clean
 
 .PHONY: clean
 clean:
-	@rm -f $(SRC_FOLDER)/*.o
+	@rm -f $(SRC_DIR)/*.o
+	@$(MAKE) -C $(SLIB_DIR) --no-print-directory clean
 
 # AM as analyze_mode
 AM ?= 0
