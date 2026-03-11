@@ -50,8 +50,10 @@ clean:
 AM ?= 0
 .PHONY: analyze
 analyze:
-ifeq ($(AM), ASM)
-	@objdump -d $(PROJECT)
-else ifeq ($(AM), NM)
-	@nm -C $(PROJECT)
-endif
+	@if [ "$(AM)" = "ASM" ]; then \
+		objdump -d $(PROJECT); \
+	elif [ "$(AM)" = "NM" ]; then \
+		nm -C $(PROJECT); \
+	else \
+		echo "Usage: AM=ASM or AM=NM"; \
+	fi
